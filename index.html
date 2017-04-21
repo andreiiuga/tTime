@@ -14,7 +14,7 @@
     	var HelloComponent = React.createClass({
 		    render() {
 		        var xhr = new XMLHttpRequest();
-				xhr.open("GET", "https://api.openweathermap.org/data/2.5/weather?units=metric&id=683506&APPID=30719c8a2baaffbfaaef83f39373f66d", false);
+				xhr.open("GET", "http://api.openweathermap.org/data/2.5/weather?units=metric&id=683506&APPID=30719c8a2baaffbfaaef83f39373f66d", false);
 				xhr.send();
 
 				console.log(xhr.response);
