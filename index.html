@@ -10,6 +10,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.1/axios.min.js"></script>
-    <script src="index.js" type="text/babel"></script>
+    <script type="text/babel">
+        var HelloComponent = React.createClass({
+            render() {
+            const data = axios.get('http://api.openweathermap.org/data/2.5/weather?units=metric&id=683506&APPID=30719c8a2baaffbfaaef83f39373f66d').
+                then(response => {
+                    console.log(response.data);
+                }).catch(err => {
+                    console.log(err.response);
+                });
+                return (
+                    <h1>Hello, World!</h1>
+                )
+            }
+        })
+        ReactDOM.render(<HelloComponent />, document.querySelector('#app'))
+    </script>
 </body>
 </html>
