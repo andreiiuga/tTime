@@ -10,16 +10,41 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.1/axios.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="index.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/babel">
     	var HelloComponent = React.createClass({
-		    render() {
-		        var xhr = new XMLHttpRequest();
+
+    		getWeatherInfo() {
+    			var xhr = new XMLHttpRequest();
 				xhr.open("GET", "http://api.openweathermap.org/data/2.5/weather?units=metric&id=683506&APPID=30719c8a2baaffbfaaef83f39373f66d", false);
 				xhr.send();
 
-				console.log(xhr.response);
+				const weather_data = JSON.parse(xhr.response);
+    		},
+
+		    render() {
+		        
 		        return (
-		            <h1>Hello, World!</h1>
+		        	<span>
+			        	<h1> tTime </h1>
+			        		<div className="search-bar-wraper">
+				            <form>
+						    	<div className="input-group">
+						      		<input type="text" className="form-control" placeholder="Search"/>
+						      		<div className="input-group-btn">
+						        		<div
+						        		onClick={this.getWeatherInfo()}
+						        		className="btn btn-default">
+						        			<i className="glyphicon glyphicon-search"></i>
+						        		</div>
+						      		</div>
+						    	</div>
+						  	</form>
+							</div>
+				  	</span>
 		        )
 		    }
 		})
