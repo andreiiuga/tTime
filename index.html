@@ -15,39 +15,67 @@
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/babel">
-    	var HelloComponent = React.createClass({
 
-    		getWeatherInfo() {
+    	class HelloComponent extends React.Component {
+
+    		constructor(props) {
+				super(props);
+				this.state = {city: 'Bucharest'};
+			};
+
+    		getWeatherInfo(city) {
     			var xhr = new XMLHttpRequest();
-				xhr.open("GET", "http://api.openweathermap.org/data/2.5/weather?units=metric&id=683506&APPID=30719c8a2baaffbfaaef83f39373f66d", false);
+				xhr.open("GET", `http://api.openweathermap.org/data/2.5/weather?units=metric&q=${city}&APPID=30719c8a2baaffbfaaef83f39373f66d`, false);
 				xhr.send();
 
 				const weather_data = JSON.parse(xhr.response);
-    		},
+				console.log(weather_data);
+				return weather_data;
+    		};
+
+    		changeLocation(e) {
+    			console.log('ajunge');
+    			var city_ref = this.refs.city;
+    			var city_name = city_ref.value;
+    			this.state = {city: city_name};
+
+    			const weather = this.getWeatherInfo(this.state.city);
+
+		        document.getElementById("demo").innerHTML = "tTime autside in " + weather.name + " is " + weather.weather[0].description;
+
+		         e.preventDefault();
+    		};
 
 		    render() {
-		        
+
+		        const weather = this.getWeatherInfo(this.state.city);
 		        return (
 		        	<span>
-			        	<h1> tTime </h1>
-			        		<div className="search-bar-wraper">
-				            <form>
+			        	<h1 id="demo"> tTime autside in {weather.name} is {weather.weather[0].description}</h1>
+			        	<div className="search-bar-wraper">
+				            <form onSubmit={this.changeLocation.bind(this)}>
 						    	<div className="input-group">
-						      		<input type="text" className="form-control" placeholder="Search"/>
+						      		<input type="text"
+						      		ref="city"
+						      		id="input_city"
+						      		className="form-control"
+						      		placeholder="Your City Here"
+						      		/>
 						      		<div className="input-group-btn">
 						        		<div
-						        		onClick={this.getWeatherInfo()}
+						        		id="buton"
+						        		onClick={this.changeLocation.bind(this)}
 						        		className="btn btn-default">
 						        			<i className="glyphicon glyphicon-search"></i>
 						        		</div>
 						      		</div>
 						    	</div>
 						  	</form>
-							</div>
+						</div>
 				  	</span>
 		        )
 		    }
-		})
+		}
 		ReactDOM.render(<HelloComponent />, document.querySelector('#app'))
     </script>
 </body>
