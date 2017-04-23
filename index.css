@@ -1,3 +1,25 @@
+.title{
+	margin-top: 0px;
+    width: 100%;
+    height: 100px;
+    text-align: center;
+    background-color: #59b4c3;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    box-shadow: 0px 4px 4px 0px #2e87d4;
+
+}
+.title-text{
+	display: inline-block;
+    font-size: 50px;
+    color: white;
+    padding: 20px;
+}
+.info-wraper{
+	text-align: center;		
+}
 .search-bar-wraper{
-	width: 200px;
+	width: 60%;
+	padding-left:20%;
+	margin-right: -20%;  
 }

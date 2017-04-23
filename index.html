@@ -41,7 +41,11 @@
 
     			const weather = this.getWeatherInfo(this.state.city);
 
-		        document.getElementById("demo").innerHTML = "tTime autside in " + weather.name + " is " + weather.weather[0].description;
+		        document.getElementById("weather").innerHTML = "tTime autside in " + weather.name + " is " + weather.weather[0].description;
+
+		        document.getElementById("temp").innerHTML = "Temperature is arround " + weather.main.temp_max +"°C";
+
+		        document.getElementById("wind").innerHTML = "Wind is going " + weather.wind.speed + "miles/hour";
 
 		         e.preventDefault();
     		};
@@ -50,8 +54,10 @@
 
 		        const weather = this.getWeatherInfo(this.state.city);
 		        return (
-		        	<span>
-			        	<h1 id="demo"> tTime autside in {weather.name} is {weather.weather[0].description}</h1>
+		        	<span className="app">
+			        	<h1 className="title">
+			        		<span className="title-text">tTime</span>
+			        	</h1>
 			        	<div className="search-bar-wraper">
 				            <form onSubmit={this.changeLocation.bind(this)}>
 						    	<div className="input-group">
@@ -72,6 +78,9 @@
 						    	</div>
 						  	</form>
 						</div>
+			        	<div id="weather" className="info-wraper">Currently in {weather.name} is {weather.weather[0].description}</div>
+			        	<div id="temp" className="info-wraper">Temperature is arround {weather.main.temp_max}°C</div>
+			        	<div id="wind" className="info-wraper">Wind is going {weather.wind.speed} miles/hour</div>
 				  	</span>
 		        )
 		    }
