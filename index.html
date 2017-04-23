@@ -16,6 +16,44 @@
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/babel">
 
+    	class Shirt extends React.Component {
+    		constructor(props) {
+				super(props);
+			};
+
+			render() {
+				var status;
+				const temp = this.props.weather_info.main.temp;
+				const humidity = this.props.weather_info.main.humidity;
+				const wind_speed = this.props.weather_info.wind.speed;
+
+
+				var comfort_grade = this.props.weather_info.main.temp - (humidity*wind_speed)/100;
+
+				if(comfort_grade > 20){
+					status=true;
+				}
+				else{
+					status=false;
+				}
+
+				if(status) {
+					return(
+						<div className="info-wraper">
+							Go for T-shirt
+							<img height="100" width="100" src="tshirt.svg"/>
+						</div>
+					)
+				} else {
+					return(
+						<div className="info-wraper">
+							Not a time for T-shirt
+						</div>
+					)
+				}
+			}
+		}
+
     	class HelloComponent extends React.Component {
 
     		constructor(props) {
@@ -34,53 +72,52 @@
     		};
 
     		changeLocation(e) {
-    			console.log('ajunge');
+    			console.log("ajunge");
+		        e.preventDefault();
     			var city_ref = this.refs.city;
     			var city_name = city_ref.value;
-    			this.state = {city: city_name};
-
-    			const weather = this.getWeatherInfo(this.state.city);
-
-		        document.getElementById("weather").innerHTML = "tTime autside in " + weather.name + " is " + weather.weather[0].description;
-
-		        document.getElementById("temp").innerHTML = "Temperature is arround " + weather.main.temp_max +"°C";
-
-		        document.getElementById("wind").innerHTML = "Wind is going " + weather.wind.speed + "miles/hour";
-
-		         e.preventDefault();
+    			this.setState({city: city_name});
     		};
 
 		    render() {
 
 		        const weather = this.getWeatherInfo(this.state.city);
+		        const icon_url = "http://openweathermap.org/img/w/" + weather.weather[0].icon +".png";
+
 		        return (
 		        	<span className="app">
 			        	<h1 className="title">
 			        		<span className="title-text">tTime</span>
 			        	</h1>
 			        	<div className="search-bar-wraper">
-				            <form onSubmit={this.changeLocation.bind(this)}>
-						    	<div className="input-group">
-						      		<input type="text"
-						      		ref="city"
-						      		id="input_city"
-						      		className="form-control"
-						      		placeholder="Your City Here"
-						      		/>
-						      		<div className="input-group-btn">
-						        		<div
-						        		id="buton"
-						        		onClick={this.changeLocation.bind(this)}
-						        		className="btn btn-default">
-						        			<i className="glyphicon glyphicon-search"></i>
-						        		</div>
-						      		</div>
-						    	</div>
-						  	</form>
+				        	<div className="search-bar">
+					            <form onSubmit={this.changeLocation.bind(this)}>
+							    	<div className="input-group">
+							      		<input type="text"
+							      		ref="city"
+							      		id="input_city"
+							      		className="form-control"
+							      		placeholder="Your City Here"
+							      		/>
+							      		<div className="input-group-btn">
+							        		<div
+							        		id="buton"
+							        		onClick={this.changeLocation.bind(this)}
+							        		className="btn btn-default">
+							        			<i className="glyphicon glyphicon-search"></i>
+							        		</div>
+							      		</div>
+							    	</div>
+							  	</form>
+							</div>
 						</div>
 			        	<div id="weather" className="info-wraper">Currently in {weather.name} is {weather.weather[0].description}</div>
 			        	<div id="temp" className="info-wraper">Temperature is arround {weather.main.temp_max}°C</div>
+			        	<div id="temp" className="info-wraper">Humidity in air is {weather.main.humidity}%</div>
 			        	<div id="wind" className="info-wraper">Wind is going {weather.wind.speed} miles/hour</div>
+			        	<div id="icon" className="info-wraper"><img src={icon_url}/></div>
+			        	<div className="info-wraper">so</div>
+			        	<div id="shirt_comp"><Shirt weather_info={weather}/></div>
 				  	</span>
 		        )
 		    }

@@ -16,10 +16,13 @@
     padding: 20px;
 }
 .info-wraper{
+	padding-top: 20px;
+	font-size: 20px;
 	text-align: center;		
 }
+.search-bar{
+	width: 100%;
+}
 .search-bar-wraper{
-	width: 60%;
-	padding-left:20%;
-	margin-right: -20%;  
+	padding: 0px 20%;
 }
