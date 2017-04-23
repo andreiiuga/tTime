@@ -88,6 +88,7 @@
     		};
 
 		    render() {
+		    	console.log("PLEASE DEACTIVATE HTTPS CONECTIONS BECAUSE THE API CALS ARE NOT SECURE");
 
 		        const weather = this.getWeatherInfo(this.state.city);
 		        const icon_url = "http://openweathermap.org/img/w/" + weather.weather[0].icon +".png";
