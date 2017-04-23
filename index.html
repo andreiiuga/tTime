@@ -27,7 +27,7 @@
 				var humidity = this.props.weather_info.main.humidity;
 				var wind_speed = this.props.weather_info.wind.speed;
 
-				var comfort_grade = (this.props.weather_info.main.temp*100)/45 - humidity - (wind_speed*100)/117;
+				var comfort_grade = (this.props.weather_info.main.temp*100)/45 - (humidity*100)/160 - (wind_speed*100)/117;
 
 				console.log(comfort_grade);
 
