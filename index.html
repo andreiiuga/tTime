@@ -23,31 +23,39 @@
 
 			render() {
 				var status;
-				const temp = this.props.weather_info.main.temp;
-				const humidity = this.props.weather_info.main.humidity;
-				const wind_speed = this.props.weather_info.wind.speed;
+				var temp = this.props.weather_info.main.temp;
+				var humidity = this.props.weather_info.main.humidity;
+				var wind_speed = this.props.weather_info.wind.speed;
 
+				var comfort_grade = (this.props.weather_info.main.temp*100)/45 - humidity - (wind_speed*100)/117;
 
-				var comfort_grade = this.props.weather_info.main.temp - (humidity*wind_speed)/100;
+				console.log(comfort_grade);
 
-				if(comfort_grade > 20){
+				if(comfort_grade > 10){
 					status=true;
 				}
 				else{
 					status=false;
 				}
 
-				if(status) {
+				if(comfort_grade > 10 && comfort_grade < 25) {
 					return(
 						<div className="info-wraper">
-							Go for T-shirt
+							Maybe Go for T-shirt
 							<img height="100" width="100" src="tshirt.svg"/>
+						</div>
+					)
+				} else  if(comfort_grade > 25) {
+					return(
+						<div className="info-wraper">
+							Defenitely Go for T-shirt
+							<img height="100" width="100" src="tshirt_hot.png"/>
 						</div>
 					)
 				} else {
 					return(
 						<div className="info-wraper">
-							Not a time for T-shirt
+							Not a great time for T-shirt
 						</div>
 					)
 				}
@@ -112,7 +120,7 @@
 							</div>
 						</div>
 			        	<div id="weather" className="info-wraper">Currently in {weather.name} is {weather.weather[0].description}</div>
-			        	<div id="temp" className="info-wraper">Temperature is arround {weather.main.temp_max}°C</div>
+			        	<div id="temp" className="info-wraper">Temperature is arround {weather.main.temp}°C</div>
 			        	<div id="temp" className="info-wraper">Humidity in air is {weather.main.humidity}%</div>
 			        	<div id="wind" className="info-wraper">Wind is going {weather.wind.speed} miles/hour</div>
 			        	<div id="icon" className="info-wraper"><img src={icon_url}/></div>
