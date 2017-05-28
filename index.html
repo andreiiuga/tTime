@@ -35,20 +35,20 @@
 
 	    	getGraphInfo(stat) {
 	    		var xhr = new XMLHttpRequest();
-					xhr.open("GET", `http://192.168.7.2//weather/readings/${stat}`, false);
+					xhr.open("GET", `http://192.168.0.104:3000/weather/readings/${stat}`, false);
 					xhr.send();
 
 					const weather_data = JSON.parse(xhr.response);
 					console.log(weather_data);
 					this.setState({
 						graph:stat,
-						data:weather_data
+						graph_data:weather_data
 					})
 	    	};
 
 	  		getAllStats(){
 	  			var xhr = new XMLHttpRequest();
-					xhr.open("GET", `http://192.168.7.2//weather/readings/all`, false);
+					xhr.open("GET", `http://192.168.0.104:3000//weather/readings/all`, false);
 					xhr.send();
 
 					const weather_data = JSON.parse(xhr.response);
@@ -58,8 +58,8 @@
 
 			  render() {
 					var data = [];
-					const { graph } = this.state;
-					graph.map( item => {
+					const { graph_data } = this.state;
+					graph_data.map( item => {
 						data.push(item);
 					})
 
