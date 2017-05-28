@@ -15,14 +15,26 @@
     color: white;
     padding: 20px;
 }
+
+.stats-wraper{
+    padding: 70px;
+    display: inline-block;
+    vertical-align: top;
+}
 .info-wraper{
-	padding-top: 20px;
-	font-size: 20px;
-	text-align: center;		
+    padding-top: 20px;
+    font-size: 20px;
+}
+.plot-wraper{
+    margin-left: 200px;
+    display: inline-block;
 }
 .search-bar{
 	width: 100%;
 }
 .search-bar-wraper{
 	padding: 0px 20%;
+}
+.buttons-wrapper{
+    padding-left: 80px;
 }

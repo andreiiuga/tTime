@@ -12,126 +12,116 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.1/axios.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="index.css">
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  	<link rel="stylesheet" href="https://unpkg.com/react-vis/dist/style.css">
+		<script type="text/javascript" src="https://unpkg.com/react-vis/dist/dist.min.js"></script>
     <script type="text/babel">
 
-    	class Shirt extends React.Component {
-    		constructor(props) {
-				super(props);
-			};
+    	const {
+			  HorizontalGridLines,
+			  LineMarkSeries,
+			  XYPlot,
+			  XAxis,
+			  YAxis,
+			} = reactVis
 
-			render() {
-				var status;
-				var temp = this.props.weather_info.main.temp;
-				var humidity = this.props.weather_info.main.humidity;
-				var wind_speed = this.props.weather_info.wind.speed;
+	    class HelloComponent extends React.Component {
 
-				var comfort_grade = (this.props.weather_info.main.temp*100)/45 - (humidity*100)/160 - (wind_speed*100)/117;
+	    	constructor(props) {
+					super(props);
+					this.state = {graph: 't_read'};
+				};
 
-				console.log(comfort_grade);
+	    	getGraphInfo(stat) {
+	    		var xhr = new XMLHttpRequest();
+					xhr.open("GET", `http://192.168.7.2//weather/readings/${stat}`, false);
+					xhr.send();
 
-				if(comfort_grade > 10){
-					status=true;
-				}
-				else{
-					status=false;
-				}
+					const weather_data = JSON.parse(xhr.response);
+					console.log(weather_data);
+					this.setState({
+						graph:stat,
+						data:weather_data
+					})
+	    	};
 
-				if(comfort_grade > 10 && comfort_grade < 25) {
-					return(
-						<div className="info-wraper">
-							Maybe Go for T-shirt
-							<img height="100" width="100" src="tshirt.svg"/>
-						</div>
-					)
-				} else  if(comfort_grade > 25) {
-					return(
-						<div className="info-wraper">
-							Defenitely Go for T-shirt
-							<img height="100" width="100" src="tshirt_hot.png"/>
-						</div>
-					)
-				} else {
-					return(
-						<div className="info-wraper">
-							Not a great time for T-shirt
-						</div>
-					)
-				}
-			}
-		}
+	  		getAllStats(){
+	  			var xhr = new XMLHttpRequest();
+					xhr.open("GET", `http://192.168.7.2//weather/readings/all`, false);
+					xhr.send();
 
-    	class HelloComponent extends React.Component {
+					const weather_data = JSON.parse(xhr.response);
+					console.log(weather_data);
+					return weather_data;
+	  		}
 
-    		constructor(props) {
-				super(props);
-				this.state = {city: 'Bucharest'};
-			};
+			  render() {
+					var data = [];
+					const { graph } = this.state;
+					graph.map( item => {
+						data.push(item);
+					})
 
-    		getWeatherInfo(city) {
-    			var xhr = new XMLHttpRequest();
-				xhr.open("GET", `http://api.openweathermap.org/data/2.5/weather?units=metric&q=${city}&APPID=30719c8a2baaffbfaaef83f39373f66d`, false);
-				xhr.send();
+					let btn_t = "btn btn-primary";
+					let btn_p = "btn btn-primary";
+					let btn_h = "btn btn-primary";
+					let btn_l = "btn btn-primary";
 
-				const weather_data = JSON.parse(xhr.response);
-				console.log(weather_data);
-				return weather_data;
-    		};
+					switch(this.state.graph){
+						case 't_read':
+							btn_t += 'active';
+							break;
 
-    		changeLocation(e) {
-    			console.log("ajunge");
-		        e.preventDefault();
-    			var city_ref = this.refs.city;
-    			var city_name = city_ref.value;
-    			this.setState({city: city_name});
-    		};
+						case 'p_read':
+							btn_p += 'active'
+							break
 
-		    render() {
-		    	console.log("PLEASE DEACTIVATE HTTPS CONECTIONS BECAUSE THE API CALS ARE NOT SECURE");
+						case 'h_read':
+							btn_h += 'active'
+							break
 
-		        const weather = this.getWeatherInfo(this.state.city);
-		        const icon_url = "http://openweathermap.org/img/w/" + weather.weather[0].icon +".png";
+						case 'l_read':
+							btn_l += 'active'
+							break
+					}
 
-		        return (
-		        	<span className="app">
-			        	<h1 className="title">
-			        		<span className="title-text">tTime</span>
-			        	</h1>
-			        	<div className="search-bar-wraper">
-				        	<div className="search-bar">
-					            <form onSubmit={this.changeLocation.bind(this)}>
-							    	<div className="input-group">
-							      		<input type="text"
-							      		ref="city"
-							      		id="input_city"
-							      		className="form-control"
-							      		placeholder="Your City Here"
-							      		/>
-							      		<div className="input-group-btn">
-							        		<div
-							        		id="buton"
-							        		onClick={this.changeLocation.bind(this)}
-							        		className="btn btn-default">
-							        			<i className="glyphicon glyphicon-search"></i>
-							        		</div>
-							      		</div>
-							    	</div>
-							  	</form>
+	        const weather = this.getAllStats();
+
+	        return (
+	        	<span className="app">
+		        	<h1 className="title">
+		        		<span className="title-text">tTime</span>
+		        	</h1>
+		        	<div className="stats-wraper">
+			        	<div id="temp" className="info-wraper">Temperature is arround {weather.temp}°C</div>
+			        	<div id="temp" className="info-wraper">Humidity in air is {weather.humidity}%</div>
+			        	<div id="wind" className="info-wraper">Atmospheric presure is {weather.presure} mmHg</div>
+			        	<div id="wind" className="info-wraper">Light exposure is {weather.light} Lux</div>
+			        </div>
+		        	<div id="plot" className="plot-wraper">
+			        	<XYPlot
+									width={500}
+									height={500}>
+									<XAxis/>
+									<YAxis/>
+									<HorizontalGridLines />
+									<LineMarkSeries data={data} />
+								</XYPlot>
+								<div className="buttons-wrapper">
+									<div className="btn-group">
+									  <button type="button" className={btn_t} onclick={getGraphInfo("t_read")}>Temperature</button>
+									  <button type="button" className={btn_h} onclick={getGraphInfo("h_read")}>Humidity</button>
+									  <button type="button" className={btn_p} onclick={getGraphInfo("p_read")}>Presure</button>
+									  <button type="button" className={btn_l} onclick={getGraphInfo("l_read")}>Light Exposure</button>
+									</div>
+								</div>
 							</div>
-						</div>
-			        	<div id="weather" className="info-wraper">Currently in {weather.name} is {weather.weather[0].description}</div>
-			        	<div id="temp" className="info-wraper">Temperature is arround {weather.main.temp}°C</div>
-			        	<div id="temp" className="info-wraper">Humidity in air is {weather.main.humidity}%</div>
-			        	<div id="wind" className="info-wraper">Wind is going {weather.wind.speed} miles/hour</div>
-			        	<div id="icon" className="info-wraper"><img src={icon_url}/></div>
-			        	<div className="info-wraper">so</div>
-			        	<div id="shirt_comp"><Shirt weather_info={weather}/></div>
-				  	</span>
-		        )
-		    }
-		}
-		ReactDOM.render(<HelloComponent />, document.querySelector('#app'))
+			  		</span>
+	        )
+			  }
+			}
+			ReactDOM.render(<HelloComponent />, document.querySelector('#app'))
     </script>
 </body>
 </html>
